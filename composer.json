@@ -1,0 +1,20 @@
+{
+    "name": "dmouse/select-helper",
+    "description": "Create a select options list with Symfony/console.",
+    "require": {
+        "symfony/console": "~2.3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.0"
+    },
+    "autoload": {
+        "psr-4": {"Dmouse\\": "src/"}
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "dmouse",
+            "email": "dmousex@gmail.com"
+        }
+    ]
+}

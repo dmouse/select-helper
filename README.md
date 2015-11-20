@@ -5,12 +5,8 @@ This component provide a select helper to the symfony/console
 
 ## How to use
 Include in your composer.json
-```json
-{
-  "require": {
-    "dmouse/select-helper": "@stable"
-  }
-}
+```bash
+$ composer require dmouse/select-helper
 ```
 Create a new instance from  the select helper class
 

@@ -12,6 +12,7 @@ class SelectHelper extends Helper
     const MOVE_UP = "\033[1A";
     const MOVE_DOWN = "\033[1B";
     const COLOR_CHARACTER = "\033[1;32m";
+    const RESULT_CHARACTER = ": ";
 
     /**
      * @var array
@@ -33,7 +34,6 @@ class SelectHelper extends Helper
      */
     public function __construct(OutputInterface $output)
     {
-
         $this->output = $output;
     }
 
@@ -58,7 +58,6 @@ class SelectHelper extends Helper
         $down = $this->totalOptions;
         $up = 0;
 
-
         while(!feof(STDIN)) {
             $c = fread(STDIN, 1);
 
@@ -81,8 +80,8 @@ class SelectHelper extends Helper
             else if("\n" === $c) {
                 $keyOption = $down -1;
                 $jump = $this->totalOptions - $down + 1;
-                $this->output->writeln("\033[{$jump}B");
-                $this->output->writeln("= ".$this->options[$keyOption]);
+                $this->output->write("\033[{$jump}B");
+                $this->output->writeln(self::RESULT_CHARACTER . $this->options[$keyOption]);
                 $this->restoreShell();
                 return $keyOption;
             }

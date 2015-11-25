@@ -83,6 +83,7 @@ class SelectHelper extends Helper
                 $jump = $this->totalOptions - $down + 1;
                 $this->output->writeln("\033[{$jump}B");
                 $this->output->writeln("= ".$this->options[$keyOption]);
+                $this->restoreShell();
                 return $keyOption;
             }
         }

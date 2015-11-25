@@ -11,24 +11,44 @@ class SelectHelper extends Helper
     const GO_TO_BEGIN_LINE = "\x0D";
     const MOVE_UP = "\033[1A";
     const MOVE_DOWN = "\033[1B";
+    const COLOR_CHARACTER = "\033[1;32m";
+
+    /**
+     * @var array
+     */
+    protected $options;
+
+    /**
+     * @var OutputInterface
+     */
+    protected $output;
 
     /**
      * @var int
      */
     protected $totalOptions;
 
+    /**
+     * @param OutputInterface $output
+     */
     public function __construct(OutputInterface $output)
     {
 
         $this->output = $output;
     }
 
+    /**
+     * @param array $options
+     */
     public function setOptions(array $options)
     {
         $this->options = $options;
         $this->totalOptions = count($options);
     }
 
+    /**
+     * @return int
+     */
     public function runSelect()
     {
         $this->prepareShell();
@@ -51,7 +71,7 @@ class SelectHelper extends Helper
                         $up++;
                         $down--;
                     }
-                    else if ("\x42" === $c && $this->inArea($down-1)) {
+                    else if ("\x42" === $c && $this->inArea($down - 1)) {
                         $this->moveCursor(self::MOVE_DOWN);
                         $down++;
                         $up--;
@@ -70,25 +90,38 @@ class SelectHelper extends Helper
         $this->restoreShell();
     }
 
+    /**
+     * @param int $position
+     * @return bool
+     */
     private function inArea($position)
     {
         return $position < $this->totalOptions - 1;
     }
 
+    /**
+     * First configuration to cursor.
+     */
     private function startCursor()
     {
         $this->output->write(self::GO_TO_BEGIN_LINE);
         $this->printCharacter();
     }
 
+    /**
+     *
+     */
     private function printCharacter()
     {
         $this->output->write(self::GO_TO_BEGIN_LINE);
-        $this->output->write("\033[1;32m");
+        $this->output->write(self::COLOR_CHARACTER);
         $this->output->write(self::CHARACTER);
         $this->output->write(self::GO_TO_BEGIN_LINE);
     }
 
+    /**
+     * @param $position
+     */
     private function moveCursor($position)
     {
         $this->output->write(" ");
@@ -96,6 +129,9 @@ class SelectHelper extends Helper
         $this->printCharacter();
     }
 
+    /**
+     * Print each option.
+     */
     private function printOptions()
     {
         $last = end(array_keys($this->options));
@@ -109,6 +145,9 @@ class SelectHelper extends Helper
         }
     }
 
+    /**
+     * Prepare shell, disable cursor.
+     */
     private function prepareShell()
     {
         $this->sttyMode = shell_exec('stty -g');
@@ -116,6 +155,9 @@ class SelectHelper extends Helper
         $this->output->write("\033[?25l");
     }
 
+    /**
+     * Restore shell, enable cursor.
+     */
     private function restoreShell()
     {
         shell_exec(sprintf('stty %s', $this->sttyMode));

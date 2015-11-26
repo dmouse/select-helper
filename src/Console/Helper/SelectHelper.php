@@ -15,6 +15,11 @@ class SelectHelper extends Helper
     const RESULT_CHARACTER = ": ";
 
     /**
+     * @var string
+     */
+    protected $sttyMode;
+
+    /**
      * @var array
      */
     protected $options;
